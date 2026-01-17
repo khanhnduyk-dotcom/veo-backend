@@ -197,10 +197,34 @@ app.post('/prf2.php', (req, res) => {
     return res.json({ success: false, message: "Invalid request" });
 });
 
+// ============ ADDITIONAL API ENDPOINTS ============
+
+// /api/fee - Fee/subscription info
+app.all('/api/fee', (req, res) => {
+    return res.json({ success: true, data: { fee: 0, subscription: "Enterprise", active: true } });
+});
+
+// /api/gen - Generation endpoint
+app.all('/api/gen', (req, res) => {
+    return res.json({ success: true, data: { remaining: 99999, used: 0, limit: 99999 } });
+});
+
+// /api/trp - Transaction/trip endpoint  
+app.all('/api/trp', (req, res) => {
+    return res.json({ success: true, data: { transactions: [], total: 0 } });
+});
+
+// Catch-all for any other /api/* endpoints
+app.all('/api/*', (req, res) => {
+    console.log('Unknown API endpoint called:', req.path);
+    return res.json({ success: true, data: {} });
+});
+
 // Root endpoint
 app.get('/', (req, res) => {
-    res.json({ success: true, message: "VEO Backend API", version: "1.0.0", endpoints: ["/login.php", "/profile.php", "/check_session.php", "/prf2.php"] });
+    res.json({ success: true, message: "VEO Backend API", version: "1.0.0", endpoints: ["/login.php", "/profile.php", "/check_session.php", "/prf2.php", "/api/fee", "/api/gen", "/api/trp"] });
 });
+
 
 // Start server
 app.listen(PORT, () => {
