@@ -78,21 +78,24 @@ app.all('/login.php', async (req, res) => {
     }
 });
 
-// Profile
+// Profile - always return VIP (like original backend)
 app.all('/profile.php', (req, res) => {
-    const tokenData = verifyToken(req.headers.authorization?.replace('Bearer ', '') || req.query?.token);
-    if (!tokenData) {
-        return res.json({ success: false, message: "Token không hợp lệ" });
-    }
     return res.json({
         success: true,
         message: "Lấy hồ sơ thành công.",
         data: {
-            user: { id: tokenData.userId, username: "VIP User", email: "vip@ultimate.com", created_at: new Date().toISOString(), status: "active" },
-            subscription: VIP_SUBSCRIPTION
+            user: { id: 388, username: "VIP User", email: "vip@ultimate.com", created_at: "2026-01-15 13:28:38", status: "active" },
+            subscription: {
+                package_name: "Gói Doanh Nghiệp",
+                start_date: "2026-01-15 13:28:38",
+                end_date: "2099-12-31 23:59:59",
+                status: "active",
+                package_id: "13"
+            }
         }
     });
 });
+
 
 // Check Session
 app.all('/check_session.php', (req, res) => {
