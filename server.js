@@ -5,6 +5,18 @@ const { createClient } = require('@supabase/supabase-js');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Logging Middleware
+app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    if (Object.keys(req.body).length > 0) {
+        console.log('Body:', JSON.stringify(req.body, null, 2));
+    }
+    if (Object.keys(req.query).length > 0) {
+        console.log('Query:', JSON.stringify(req.query, null, 2));
+    }
+    next();
+});
+
 // Middleware
 app.use(cors());
 app.use(express.json());
